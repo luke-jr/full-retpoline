@@ -1,0 +1,46 @@
+diff -ur a/engine/build.jam b/engine/build.jam
+--- a/engine/build.jam	2018-03-14 02:08:28.127407833 +0000
++++ b/engine/build.jam	2018-03-14 02:09:25.008650769 +0000
+@@ -212,7 +212,7 @@
+ toolset gcc gcc : "-o " : -D
+     : -pedantic -fno-strict-aliasing
+     [ opt --release : [ opt --symbols : -g : -s ] -O3 ]
+-    [ opt --debug : -g -O0 -fno-inline ]
++    [ opt --debug : -g -O1 ]
+     [ opt --profile : -O3 -g -pg ]
+     -I$(--python-include) -I$(--extra-include) -Wno-long-long
+     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+diff -ur a/tools/gcc.jam b/tools/gcc.jam
+--- a/tools/gcc.jam	2017-08-19 16:49:50.000000000 +0000
++++ b/tools/gcc.jam	2018-03-14 02:08:45.740482969 +0000
+@@ -378,11 +378,11 @@
+ toolset.flags gcc.compile PCH_FILE <pch>on : <pch-file> ;
+ 
+ # Declare flags and action for compilation.
+-toolset.flags gcc.compile OPTIONS <optimization>off   : -O0 ;
++toolset.flags gcc.compile OPTIONS <optimization>off   : -O1 ;
+ toolset.flags gcc.compile OPTIONS <optimization>speed : -O3 ;
+ toolset.flags gcc.compile OPTIONS <optimization>space : -Os ;
+ 
+-toolset.flags gcc.compile OPTIONS <inlining>off  : -fno-inline ;
++toolset.flags gcc.compile OPTIONS <inlining>off  : -Wno-inline ;
+ toolset.flags gcc.compile OPTIONS <inlining>on   : -Wno-inline ;
+ toolset.flags gcc.compile OPTIONS <inlining>full : -finline-functions -Wno-inline ;
+ 
+diff -ur a/tools/gcc.py b/tools/gcc.py
+--- a/tools/gcc.py	2017-08-19 16:49:50.000000000 +0000
++++ b/tools/gcc.py	2018-03-14 02:08:45.740482969 +0000
+@@ -278,11 +278,11 @@
+ flags('gcc.compile', 'PCH_FILE', ['<pch>on'], ['<pch-file>'])
+ 
+ # Declare flags and action for compilation
+-flags('gcc.compile', 'OPTIONS', ['<optimization>off'], ['-O0'])
++flags('gcc.compile', 'OPTIONS', ['<optimization>off'], ['-O1'])
+ flags('gcc.compile', 'OPTIONS', ['<optimization>speed'], ['-O3'])
+ flags('gcc.compile', 'OPTIONS', ['<optimization>space'], ['-Os'])
+ 
+-flags('gcc.compile', 'OPTIONS', ['<inlining>off'], ['-fno-inline'])
++flags('gcc.compile', 'OPTIONS', ['<inlining>off'], ['-Wno-inline'])
+ flags('gcc.compile', 'OPTIONS', ['<inlining>on'], ['-Wno-inline'])
+ flags('gcc.compile', 'OPTIONS', ['<inlining>full'], ['-finline-functions', '-Wno-inline'])
+ 

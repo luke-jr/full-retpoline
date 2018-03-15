@@ -1,0 +1,23 @@
+diff -ur arch/x86/purgatory/Makefile ./arch/x86/purgatory/Makefile
+--- a/arch/x86/purgatory/Makefile	2018-01-28 21:20:33.000000000 +0000
++++ b/arch/x86/purgatory/Makefile	2018-03-03 04:44:42.650315249 +0000
+@@ -19,6 +19,7 @@
+ KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes -fno-zero-initialized-in-bss -fno-builtin -ffreestanding -c -MD -Os -mcmodel=large
+ KBUILD_CFLAGS += -m$(BITS)
+ KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
++KBUILD_CFLAGS += $(KCFLAGS) -mindirect-branch=keep -mfunction-return=keep -mno-indirect-branch-register -fplt
+ 
+ $(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
+ 		$(call if_changed,ld)
+diff -ur scripts/gcc-x86_64-has-stack-protector.sh ./scripts/gcc-x86_64-has-stack-protector.sh
+--- a/scripts/gcc-x86_64-has-stack-protector.sh	2018-01-28 21:20:33.000000000 +0000
++++ b/scripts/gcc-x86_64-has-stack-protector.sh	2018-03-02 18:36:06.226401544 +0000
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -O0 -mcmodel=kernel -fno-PIE -fstack-protector -mindirect-branch=keep -O0 - -o - 2> /dev/null | grep -q "%gs"
+ if [ "$?" -eq "0" ] ; then
+ 	echo y
+ else

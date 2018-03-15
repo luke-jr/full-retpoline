@@ -1,0 +1,13 @@
+diff -ur libgcrypt-1.8.1.orig/configure.ac libgcrypt-1.8.1/configure.ac
+--- libgcrypt-1.8.1.orig/configure.ac	2018-03-12 22:51:16.105242970 +0000
++++ libgcrypt-1.8.1/configure.ac	2018-03-12 22:51:42.283360267 +0000
+@@ -581,7 +581,7 @@
+ AC_ARG_ENABLE(jent-support,
+               AC_HELP_STRING([--disable-jent-support],
+                         [Disable support for the Jitter entropy collector]),
+-	      jentsupport=$enableval,jentsupport=yes)
++	      jentsupport=$enableval,jentsupport=no)
+ AC_MSG_RESULT($jentsupport)
+ 
+ # Implementation of the --disable-padlock-support switch.
+Only in libgcrypt-1.8.1: configure.ac~

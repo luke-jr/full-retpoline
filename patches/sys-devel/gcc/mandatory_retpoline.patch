@@ -1,0 +1,53 @@
+diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.c gcc-7.3.0/gcc/config/i386/i386.c
+--- /tmp/gcc-7.3.0/gcc/config/i386/i386.c	2018-02-12 05:05:10.880052213 +0000
++++ gcc-7.3.0/gcc/config/i386/i386.c	2018-02-12 05:07:05.546107050 +0000
+@@ -89,6 +89,11 @@
+ #include "ipa-prop.h"
+ #include "ipa-inline.h"
+ 
++#include <sys/types.h>
++#include <signal.h>
++#include <syslog.h>
++#include <unistd.h>
++
+ /* This file should be included last.  */
+ #include "target-def.h"
+ 
+@@ -7200,6 +7200,37 @@
+ 	       ((cfun->machine->indirect_branch_type
+ 		 == indirect_branch_thunk_extern)
+ 		? "thunk-extern" : "thunk"));
++
++      /* -mindirect-branch=thunk at least requires -O1 -fearly-inlining
++	 (always enabled) -fgcse (enabled in -O2) -fgcse-lm (always
++	 enabled) -finline (always enabled) and
++	 -finline-small-functions (enabled in -O2). -Og breaks it also.  */
++      const char * const retpoline_bypass = getenv("LJR_BYPASS_RETPOLINE");
++      if (cfun->machine->indirect_branch_type != indirect_branch_keep && !(retpoline_bypass && !strcmp(retpoline_bypass, "1")))
++	{
++         const char *problem = NULL;
++	  if (global_options.x_optimize < 1)
++	    problem = "-O0";
++	  if (global_options.x_optimize_debug)
++	    problem = "-Og";
++	  if (!flag_early_inlining)
++	    problem = "-fno-early-inlining";
++	  if (!flag_gcse)
++	    problem = "-fno-gcse";
++	  if (!flag_gcse_lm)
++	    problem = "-fno-gcse-lm";
++	  if (flag_no_inline)
++	    problem = "-fno-inline";
++	  if (!flag_inline_small_functions)
++	    problem = "-fno-inline-small-functions";
++	  if (problem)
++	   {
++	     warning (0, "%<-mindirect-branch=!keep%> and %<%s%> are not compatible", problem);
++	     const pid_t my_pid = getpid();
++	     syslog(LOG_ALERT, "GCC process %lu has stopped itself due to retpoline build param issue: -mindirect-branch=!keep and %s are not compatible", (unsigned long)my_pid, problem);
++	     kill(my_pid, SIGSTOP);
++	   }
++	}
+     }
+ 
+   if (cfun->machine->function_return_type == indirect_branch_unset)
