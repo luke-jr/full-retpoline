@@ -33,12 +33,14 @@ It seems fairly safe to let it get optimised, so the patch simply removes -O0.
 
 # Linux kernel
 
-To build a kernel, use the patch from `patches/sys-kernel/gentoo-sources`, and add a GNUmakefile with:
+To build a kernel, add a GNUmakefile with (adjust the path to this git repo):
 
 ```
-KCFLAGS=-mindirect-branch=keep -mfunction-return=keep -mno-indirect-branch-register -fplt
+CROSS_COMPILE=/path/to/gcc-no-retpoline/x86_64-pc-linux-gnu-no-retpoline-
 include Makefile
 ```
+
+NOTE: If you were using the older steps for the kernel, be sure to *remove* the patch!
 
 This will effectively undo the main changes of this patch for the kernel's build system.
 Since the kernel has its own retpoline support, this should be safe.

@@ -1,0 +1,3 @@
+#!/bin/sh
+export LJR_BYPASS_RETPOLINE=1
+exec ${0/*-/} -mindirect-branch=keep -mfunction-return=keep -mno-indirect-branch-register -fplt "$@"
