@@ -1,0 +1,67 @@
+diff -ur meson-0.44.1.orig/mesonbuild/compilers/c.py meson-0.44.1/mesonbuild/compilers/c.py
+--- meson-0.44.1.orig/mesonbuild/compilers/c.py	2018-02-20 21:48:57.000000000 +0000
++++ meson-0.44.1/mesonbuild/compilers/c.py	2018-03-19 16:19:27.431752424 +0000
+@@ -117,15 +117,12 @@
+     def get_compile_only_args(self):
+         return ['-c']
+ 
+-    def get_no_optimization_args(self):
+-        return ['-O0']
+-
+     def get_compiler_check_args(self):
+         '''
+         Get arguments useful for compiler checks such as being permissive in
+         the code quality and not doing any optimization.
+         '''
+-        return self.get_no_optimization_args()
++        return []
+ 
+     def get_output_args(self, target):
+         return ['-o', target]
+diff -ur meson-0.44.1.orig/mesonbuild/compilers/compilers.py meson-0.44.1/mesonbuild/compilers/compilers.py
+--- meson-0.44.1.orig/mesonbuild/compilers/compilers.py	2018-02-20 21:48:57.000000000 +0000
++++ meson-0.44.1/mesonbuild/compilers/compilers.py	2018-03-19 16:16:38.623995673 +0000
+@@ -106,9 +106,9 @@
+     return suffix in lib_suffixes
+ 
+ gnulike_buildtype_args = {'plain': [],
+-                          # -O0 is passed for improved debugging information with gcc
++                          # -O1 is passed for improved debugging information with gcc
+                           # See https://github.com/mesonbuild/meson/pull/509
+-                          'debug': ['-O0', '-g'],
++                          'debug': ['-O1', '-g'],
+                           'debugoptimized': ['-O2', '-g'],
+                           'release': ['-O3'],
+                           'minsize': ['-Os', '-g']}
+@@ -156,14 +156,14 @@
+                        }
+ 
+ d_gdc_buildtype_args = {'plain': [],
+-                        'debug': ['-g', '-O0'],
++                        'debug': ['-g', '-O1'],
+                         'debugoptimized': ['-g', '-O'],
+                         'release': ['-O3', '-frelease'],
+                         'minsize': [],
+                         }
+ 
+ d_ldc_buildtype_args = {'plain': [],
+-                        'debug': ['-g', '-O0'],
++                        'debug': ['-g', '-O1'],
+                         'debugoptimized': ['-g', '-O'],
+                         'release': ['-O3', '-release'],
+                         'minsize': [],
+diff -ur meson-0.44.1.orig/run_unittests.py meson-0.44.1/run_unittests.py
+--- meson-0.44.1.orig/run_unittests.py	2018-02-20 21:48:57.000000000 +0000
++++ meson-0.44.1/run_unittests.py	2018-03-19 16:16:49.636045041 +0000
+@@ -2124,9 +2124,9 @@
+             # Verify that -I flags from the `args` kwarg are first
+             # This is set in the '43 has function' test case
+             self.assertEqual(cmd[1], '-I/tmp')
+-            # Verify that -O3 set via the environment is overridden by -O0
++            # Verify that -O3 set via the environment is overridden by -O1
+             Oargs = [arg for arg in cmd if arg.startswith('-O')]
+-            self.assertEqual(Oargs, [Oflag, '-O0'])
++            self.assertEqual(Oargs, [Oflag, '-O1'])
+ 
+     def _test_stds_impl(self, testdir, compiler, p):
+         lang_std = p + '_std'
