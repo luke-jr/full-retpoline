@@ -4,6 +4,9 @@ It is designed for Gentoo, but may be useful on other built-from-source systems 
 Note that this is *intentionally* excessive: certain compile flags are enabled that may very well be unnecessary.
 In particular, -O0 and -Og will throw an error by default.
 
+There are many things still missing to get a 100% retpoline'd system.
+If you'd like to help out, please read [the TODO file](TODO.md) and open issues and pull requests as appropriate.
+
 # GCC: Usage, caution
 
 The GCC patches enable all retpolines by default, and modifies the defaults for other CFLAGS that are suspected at taking away from its protections.
