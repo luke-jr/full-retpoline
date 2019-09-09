@@ -1,0 +1,19 @@
+--- phc-winner-argon2-20171227/src/core.c	2017-12-27 19:56:31.000000000 +0000
++++ phc-winner-argon2-20171227/src/core.c	2019-09-09 21:23:02.730019407 +0000
+@@ -120,7 +120,7 @@
+     }
+ }
+ 
+-void NOT_OPTIMIZED secure_wipe_memory(void *v, size_t n) {
++void secure_wipe_memory(void *v, size_t n) {
+ #if defined(_MSC_VER) && VC_GE_2005(_MSC_VER)
+     SecureZeroMemory(v, n);
+ #elif defined memset_s
+@@ -130,6 +130,7 @@
+ #else
+     static void *(*const volatile memset_sec)(void *, int, size_t) = &memset;
+     memset_sec(v, 0, n);
++    __asm__ __volatile__("": :"r"(v) :"memory");
+ #endif
+ }
+ 
