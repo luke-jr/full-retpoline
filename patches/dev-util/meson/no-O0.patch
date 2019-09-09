@@ -1,32 +1,21 @@
-diff -ur meson-0.48.2.orig/mesonbuild/compilers/c.py meson-0.48.2/mesonbuild/compilers/c.py
---- meson-0.48.2.orig/mesonbuild/compilers/c.py	2018-11-08 22:43:05.000000000 +0000
-+++ meson-0.48.2/mesonbuild/compilers/c.py	2019-03-13 23:34:27.186809230 +0000
-@@ -149,15 +149,12 @@
-     def get_compile_only_args(self):
+diff -ur meson-0.51.1.orig/mesonbuild/compilers/clike.py meson-0.51.1/mesonbuild/compilers/clike.py
+--- meson-0.51.1.orig/mesonbuild/compilers/clike.py	2019-07-09 16:34:42.000000000 +0000
++++ meson-0.51.1/mesonbuild/compilers/clike.py	2019-09-09 12:48:28.359473543 +0000
+@@ -123,7 +123,7 @@
          return ['-c']
  
--    def get_no_optimization_args(self):
+     def get_no_optimization_args(self):
 -        return ['-O0']
--
++        return ['-O1']
+ 
      def get_compiler_check_args(self):
          '''
-         Get arguments useful for compiler checks such as being permissive in
-         the code quality and not doing any optimization.
-         '''
--        return self.get_no_optimization_args()
-+        return []
- 
-     def get_allow_undefined_link_args(self):
-         '''
-diff -ur meson-0.48.2.orig/run_unittests.py meson-0.48.2/run_unittests.py
---- meson-0.48.2.orig/run_unittests.py	2018-11-08 22:43:05.000000000 +0000
-+++ meson-0.48.2/run_unittests.py	2019-03-13 23:34:27.224807016 +0000
-@@ -3450,9 +3450,9 @@
-             # Verify that -I flags from the `args` kwarg are first
-             # This is set in the '40 has function' test case
+diff -ur meson-0.51.1.orig/run_unittests.py meson-0.51.1/run_unittests.py
+--- meson-0.51.1.orig/run_unittests.py	2019-07-09 16:34:42.000000000 +0000
++++ meson-0.51.1/run_unittests.py	2019-09-09 12:49:23.504249236 +0000
+@@ -4471,7 +4471,7 @@
              self.assertEqual(cmd[1], '-I/tmp')
--            # Verify that -O3 set via the environment is overridden by -O0
-+            # Verify that -O3 set via the environment is overridden by -O1
+             # Verify that -O3 set via the environment is overridden by -O0
              Oargs = [arg for arg in cmd if arg.startswith('-O')]
 -            self.assertEqual(Oargs, [Oflag, '-O0'])
 +            self.assertEqual(Oargs, [Oflag, '-O1'])
