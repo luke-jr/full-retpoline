@@ -1,9 +1,9 @@
-diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.c gcc-7.3.0/gcc/config/i386/i386.c
---- /tmp/gcc-7.3.0/gcc/config/i386/i386.c	2018-02-12 05:05:10.880052213 +0000
-+++ gcc-7.3.0/gcc/config/i386/i386.c	2018-02-12 05:07:05.546107050 +0000
-@@ -89,6 +89,11 @@
- #include "ipa-prop.h"
- #include "ipa-inline.h"
+diff -ur gcc-9.2.0.orig/gcc/config/i386/i386.c gcc-9.2.0/gcc/config/i386/i386.c
+--- gcc-9.2.0.orig/gcc/config/i386/i386.c	2019-08-01 06:29:22.000000000 +0000
++++ gcc-9.2.0/gcc/config/i386/i386.c	2020-01-12 17:31:24.470855641 +0000
+@@ -92,6 +92,11 @@
+ #include "debug.h"
+ #include "dwarf2out.h"
  
 +#include <sys/types.h>
 +#include <signal.h>
@@ -13,11 +13,10 @@ diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.c gcc-7.3.0/gcc/config/i386/i386.c
  /* This file should be included last.  */
  #include "target-def.h"
  
-@@ -7200,6 +7200,37 @@
- 	       ((cfun->machine->indirect_branch_type
+@@ -5793,6 +5798,37 @@
  		 == indirect_branch_thunk_extern)
  		? "thunk-extern" : "thunk"));
-+
+ 
 +      /* -mindirect-branch=thunk at least requires -O1 -fearly-inlining
 +	 (always enabled) -fgcse (enabled in -O2) -fgcse-lm (always
 +	 enabled) -finline (always enabled) and
@@ -48,6 +47,7 @@ diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.c gcc-7.3.0/gcc/config/i386/i386.c
 +	     kill(my_pid, SIGSTOP);
 +	   }
 +	}
-     }
- 
-   if (cfun->machine->function_return_type == indirect_branch_unset)
++
+       if (cfun->machine->indirect_branch_type != indirect_branch_keep
+ 	  && (flag_cf_protection & CF_RETURN))
+ 	error ("%<-mindirect-branch%> and %<-fcf-protection%> are not "

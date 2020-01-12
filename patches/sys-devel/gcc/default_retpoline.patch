@@ -1,7 +1,7 @@
-diff -ur /tmp/gcc-7.3.0/gcc/common.opt gcc-7.3.0/gcc/common.opt
---- /tmp/gcc-7.3.0/gcc/common.opt	2018-02-12 05:05:10.868052102 +0000
-+++ gcc-7.3.0/gcc/common.opt	2018-02-12 05:05:21.590151238 +0000
-@@ -1407,7 +1407,7 @@
+diff -ur gcc-9.2.0.orig/gcc/common.opt gcc-9.2.0/gcc/common.opt
+--- gcc-9.2.0.orig/gcc/common.opt	2020-01-12 17:23:12.596342248 +0000
++++ gcc-9.2.0/gcc/common.opt	2020-01-12 17:23:56.296565496 +0000
+@@ -1486,7 +1486,7 @@
  Place each function into its own section.
  
  fgcse
@@ -10,7 +10,7 @@ diff -ur /tmp/gcc-7.3.0/gcc/common.opt gcc-7.3.0/gcc/common.opt
  Perform global common subexpression elimination.
  
  fgcse-lm
-@@ -1569,7 +1569,7 @@
+@@ -1648,7 +1648,7 @@
  Enable inlining of function declared \"inline\", disabling disables all inlining.
  
  finline-small-functions
@@ -19,7 +19,7 @@ diff -ur /tmp/gcc-7.3.0/gcc/common.opt gcc-7.3.0/gcc/common.opt
  Integrate functions into their callers when code size is known not to grow.
  
  finline-functions
-@@ -1942,7 +1942,7 @@
+@@ -2056,7 +2056,7 @@
  Generate position-independent code for executables if possible (small mode).
  
  fplt
@@ -28,11 +28,11 @@ diff -ur /tmp/gcc-7.3.0/gcc/common.opt gcc-7.3.0/gcc/common.opt
  Use PLT for PIC calls (-fno-plt: load the address from GOT at call site).
  
  fplugin=
-diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.opt gcc-7.3.0/gcc/config/i386/i386.opt
---- /tmp/gcc-7.3.0/gcc/config/i386/i386.opt	2018-02-12 05:05:10.881052222 +0000
-+++ gcc-7.3.0/gcc/config/i386/i386.opt	2018-02-12 05:05:21.600151330 +0000
-@@ -929,11 +929,11 @@
- Generate code which uses only the general registers.
+diff -ur gcc-9.2.0.orig/gcc/config/i386/i386.opt gcc-9.2.0/gcc/config/i386/i386.opt
+--- gcc-9.2.0.orig/gcc/config/i386/i386.opt	2020-01-12 17:23:12.597342254 +0000
++++ gcc-9.2.0/gcc/config/i386/i386.opt	2020-01-12 17:26:24.385322101 +0000
+@@ -1038,11 +1038,11 @@
+ Make all function calls indirect.
  
  mindirect-branch=
 -Target Report RejectNegative Joined Enum(indirect_branch) Var(ix86_indirect_branch) Init(indirect_branch_keep)
@@ -45,16 +45,18 @@ diff -ur /tmp/gcc-7.3.0/gcc/config/i386/i386.opt gcc-7.3.0/gcc/config/i386/i386.
  Convert function return to call and return thunk.
  
  Enum
-@@ -953,5 +953,5 @@
+@@ -1062,7 +1062,7 @@
  Enum(indirect_branch) String(thunk-extern) Value(indirect_branch_thunk_extern)
  
  mindirect-branch-register
 -Target Report Var(ix86_indirect_branch_register) Init(0)
 +Target Report Var(ix86_indirect_branch_register) Init(1)
  Force indirect call and jump via register.
-diff -ur /tmp/gcc-7.3.0/gcc/opts.c gcc-7.3.0/gcc/opts.c
---- /tmp/gcc-7.3.0/gcc/opts.c	2018-02-12 05:05:10.881052222 +0000
-+++ gcc-7.3.0/gcc/opts.c	2018-02-12 05:05:21.600151330 +0000
+ 
+ mmovdiri
+diff -ur gcc-9.2.0.orig/gcc/opts.c gcc-9.2.0/gcc/opts.c
+--- gcc-9.2.0.orig/gcc/opts.c	2020-01-12 17:23:12.597342254 +0000
++++ gcc-9.2.0/gcc/opts.c	2020-01-12 17:25:43.717114310 +0000
 @@ -313,6 +313,9 @@
  
    /* Some targets have other target-specific initialization.  */
@@ -65,21 +67,14 @@ diff -ur /tmp/gcc-7.3.0/gcc/opts.c gcc-7.3.0/gcc/opts.c
  }
  
  /* Release any allocations owned by OPTS.  */
-diff -ur gcc-7.3.0/gcc/opts.c gcc-7.3.0/gcc/opts.c
---- gcc-7.3.0/gcc/opts.c	2018-02-27 18:36:26.256172876 +0000
-+++ gcc-7.3.0/gcc/opts.c	2018-02-28 04:03:51.722633420 +0000
-@@ -481,14 +481,12 @@
-     { OPT_LEVELS_1_PLUS, OPT_ftree_builtin_call_dce, NULL, 1 },
- 
-     /* -O2 optimizations.  */
--    { OPT_LEVELS_2_PLUS, OPT_finline_small_functions, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_findirect_inlining, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_fpartial_inlining, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_fthread_jumps, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_fcrossjumping, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_foptimize_sibling_calls, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_fcse_follow_jumps, NULL, 1 },
--    { OPT_LEVELS_2_PLUS, OPT_fgcse, NULL, 1 },
+@@ -493,10 +496,8 @@
+     { OPT_LEVELS_2_PLUS, OPT_fdevirtualize, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_fdevirtualize_speculatively, NULL, 1 },
      { OPT_LEVELS_2_PLUS, OPT_fexpensive_optimizations, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_frerun_cse_after_loop, NULL, 1 },
-     { OPT_LEVELS_2_PLUS, OPT_fcaller_saves, NULL, 1 },
+-    { OPT_LEVELS_2_PLUS, OPT_fgcse, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_fhoist_adjacent_loads, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_findirect_inlining, NULL, 1 },
+-    { OPT_LEVELS_2_PLUS, OPT_finline_small_functions, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_fipa_bit_cp, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_fipa_cp, NULL, 1 },
+     { OPT_LEVELS_2_PLUS, OPT_fipa_icf, NULL, 1 },
