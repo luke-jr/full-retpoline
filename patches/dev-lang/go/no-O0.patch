@@ -1,0 +1,36 @@
+diff -ur go.orig/src/cmd/cgo/gcc.go go/src/cmd/cgo/gcc.go
+--- go.orig/src/cmd/cgo/gcc.go	2019-12-04 22:53:55.000000000 +0000
++++ go/src/cmd/cgo/gcc.go	2020-01-12 17:12:03.827927212 +0000
+@@ -1980,7 +1980,7 @@
+ 	}
+ 
+ 	// Force -O0 optimization but keep the trailing "-" at the end.
+-	nargs = append(nargs, "-O0")
++	nargs = append(nargs, "-O1")
+ 	nl := len(nargs)
+ 	nargs[nl-2], nargs[nl-1] = nargs[nl-1], nargs[nl-2]
+ 
+diff -ur go.orig/src/runtime/testdata/testprogcgo/sigpanic.go go/src/runtime/testdata/testprogcgo/sigpanic.go
+--- go.orig/src/runtime/testdata/testprogcgo/sigpanic.go	2019-12-04 22:53:55.000000000 +0000
++++ go/src/runtime/testdata/testprogcgo/sigpanic.go	2020-01-12 17:12:18.157000353 +0000
+@@ -8,7 +8,7 @@
+ // We want to test unwinding from sigpanic into C code (without a C symbolizer).
+ 
+ /*
+-#cgo CFLAGS: -O0
++#cgo CFLAGS: -O1
+ 
+ char *pnil;
+ 
+diff -ur go.orig/src/runtime/testdata/testprogcgo/traceback.go go/src/runtime/testdata/testprogcgo/traceback.go
+--- go.orig/src/runtime/testdata/testprogcgo/traceback.go	2019-12-04 22:53:55.000000000 +0000
++++ go/src/runtime/testdata/testprogcgo/traceback.go	2020-01-12 17:12:14.832983386 +0000
+@@ -9,7 +9,7 @@
+ // We use a fake traceback, and a symbolizer that dumps a string we recognize.
+ 
+ /*
+-#cgo CFLAGS: -g -O0
++#cgo CFLAGS: -g -O1
+ 
+ #include <stdint.h>
+ 
