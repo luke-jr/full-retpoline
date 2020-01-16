@@ -1,0 +1,46 @@
+diff -ur ghostscript-9.50.orig/base/unix-gcc.mak ghostscript-9.50/base/unix-gcc.mak
+--- ghostscript-9.50.orig/base/unix-gcc.mak	2020-01-16 04:41:09.713626503 +0000
++++ ghostscript-9.50/base/unix-gcc.mak	2020-01-16 04:43:07.991715255 +0000
+@@ -377,7 +377,7 @@
+ # and shared object builds.
+ 
+ CFLAGS_STANDARD= -O2
+-CFLAGS_DEBUG= -g -O0
++CFLAGS_DEBUG= -g -O1
+ CFLAGS_PROFILE=-pg  -O2
+ CFLAGS_SO=-fPIC
+ 
+diff -ur ghostscript-9.50.orig/configure.ac ghostscript-9.50/configure.ac
+--- ghostscript-9.50.orig/configure.ac	2020-01-16 04:41:09.601633046 +0000
++++ ghostscript-9.50/configure.ac	2020-01-16 04:42:48.998825121 +0000
+@@ -277,26 +277,26 @@
+ if test x"$cross_compiling" = x"yes"; then
+   if test $ac_cv_prog_gcc = yes; then
+       CC_OPT_FLAGS_TO_TRY="-O2"
+-      CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
++      CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+   fi
+ else
+   case `uname` in
+         Linux*|GNU*)
+         if test $ac_cv_prog_gcc = yes; then
+             CC_OPT_FLAGS_TO_TRY="-O2"
+-            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
++            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+         fi
+         ;;
+         *BSD)
+         if test $ac_cv_prog_gcc = yes; then
+             CC_OPT_FLAGS_TO_TRY="-O2"
+-            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
++            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+         fi
+         ;;
+         Darwin*)
+         if test $ac_cv_prog_gcc = yes; then
+             CC_OPT_FLAGS_TO_TRY="-O2"
+-            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
++            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+         fi
+         SET_DT_SONAME=""
+         ;;
