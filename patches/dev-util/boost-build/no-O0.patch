@@ -1,20 +1,38 @@
-diff -ur a/engine/build.jam b/engine/build.jam
---- a/engine/build.jam	2018-03-14 02:08:28.127407833 +0000
-+++ b/engine/build.jam	2018-03-14 02:09:25.008650769 +0000
-@@ -212,7 +212,7 @@
- toolset gcc gcc : "-o " : -D
-     : -pedantic -fno-strict-aliasing
-     [ opt --release : [ opt --symbols : -g : -s ] -O3 ]
--    [ opt --debug : -g -O0 -fno-inline ]
-+    [ opt --debug : -g -O1 ]
-     [ opt --profile : -O3 -g -pg ]
-     -I$(--python-include) -I$(--extra-include) -Wno-long-long
-     : -L$(--python-lib[1]) -l$(--python-lib[2]) ;
+diff -ur a/engine/build.sh b/engine/build.sh
+--- a/engine/build.sh	2019-08-14 12:03:50.000000000 +0000
++++ b/engine/build.sh	2020-01-16 04:50:29.980642534 +0000
+@@ -185,7 +185,7 @@
+         *)
+         B2_CXX="${CXX} -x c++ -std=c++11"
+         B2_CXXFLAGS_RELEASE="-O2 -s"
+-        B2_CXXFLAGS_DEBUG="-O0 -g"
++        B2_CXXFLAGS_DEBUG="-O1 -g"
+         esac
+     ;;
+ 
+@@ -236,7 +236,7 @@
+         fi
+         B2_CXX="${CXX} -xc++"
+         B2_CXXFLAGS_RELEASE="-O3 -s"
+-        B2_CXXFLAGS_DEBUG="-O0 -g -p"
++        B2_CXXFLAGS_DEBUG="-O1 -g -p"
+     ;;
+ 
+     vacpp)
+@@ -324,7 +324,7 @@
+         B2_CXX="${CXX} -x c++ -O3 -std=c++11"
+         B2_TOOLSET=clang
+         B2_CXXFLAGS_RELEASE="-O3 -s"
+-        B2_CXXFLAGS_DEBUG="-O0 -fno-inline -g"
++        B2_CXXFLAGS_DEBUG="-O1 -Wno-inline -g"
+     ;;
+ 
+     tru64cxx)
 diff -ur a/tools/gcc.jam b/tools/gcc.jam
---- a/tools/gcc.jam	2017-08-19 16:49:50.000000000 +0000
-+++ b/tools/gcc.jam	2018-03-14 02:08:45.740482969 +0000
-@@ -378,11 +378,11 @@
- toolset.flags gcc.compile PCH_FILE <pch>on : <pch-file> ;
+--- a/tools/gcc.jam	2019-08-14 12:03:50.000000000 +0000
++++ b/tools/gcc.jam	2020-01-16 04:50:55.767796283 +0000
+@@ -704,11 +704,11 @@
+ ###
  
  # Declare flags and action for compilation.
 -toolset.flags gcc.compile OPTIONS <optimization>off   : -O0 ;
@@ -28,8 +46,8 @@ diff -ur a/tools/gcc.jam b/tools/gcc.jam
  toolset.flags gcc.compile OPTIONS <inlining>full : -finline-functions -Wno-inline ;
  
 diff -ur a/tools/gcc.py b/tools/gcc.py
---- a/tools/gcc.py	2017-08-19 16:49:50.000000000 +0000
-+++ b/tools/gcc.py	2018-03-14 02:08:45.740482969 +0000
+--- a/tools/gcc.py	2019-08-14 12:03:50.000000000 +0000
++++ b/tools/gcc.py	2020-01-16 04:50:43.605723773 +0000
 @@ -278,11 +278,11 @@
  flags('gcc.compile', 'PCH_FILE', ['<pch>on'], ['<pch-file>'])
  
