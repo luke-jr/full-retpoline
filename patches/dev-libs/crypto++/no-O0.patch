@@ -1,0 +1,35 @@
+diff -ur work.orig/cryptest.sh work/cryptest.sh
+--- work.orig/cryptest.sh	2019-04-28 23:36:49.000000000 +0000
++++ work/cryptest.sh	2020-02-05 17:57:45.778135887 +0000
+@@ -363,9 +363,9 @@
+ # Use a fallback strategy so OPT_O0 can be used with DEBUG_CXXFLAGS
+ OPT_O0=
+ rm -f "$TMPDIR/adhoc.exe" > /dev/null 2>&1
+-"$CXX" -DCRYPTOPP_ADHOC_MAIN -O0 adhoc.cpp -o "$TMPDIR/adhoc.exe" > /dev/null 2>&1
++"$CXX" -DCRYPTOPP_ADHOC_MAIN -O1 adhoc.cpp -o "$TMPDIR/adhoc.exe" > /dev/null 2>&1
+ if [[ ("$?" -eq "0") ]]; then
+-	OPT_O0=-O0
++	OPT_O0=-O1
+ else
+ 	rm -f "$TMPDIR/adhoc.exe" > /dev/null 2>&1
+ 	"$CXX" -DCRYPTOPP_ADHOC_MAIN -xO0 adhoc.cpp -o "$TMPDIR/adhoc.exe" > /dev/null 2>&1
+@@ -5458,7 +5458,7 @@
+ 		"$MAKE" clean > /dev/null 2>&1
+ 		rm -f adhoc.cpp > /dev/null 2>&1
+ 
+-		CXXFLAGS="-DDEBUG -g3 -O0"
++		CXXFLAGS="-DDEBUG -g3 -O1"
+ 		CXX="/bin/g++" CXXFLAGS="$CXXFLAGS" "$MAKE" "${MAKEARGS[@]}" static dynamic cryptest.exe 2>&1 | tee -a "$TEST_RESULTS"
+ 
+ 		if [[ ("${PIPESTATUS[0]}" -ne "0") ]]; then
+--- a/GNUmakefile	2020-02-05 18:55:00.373099859 +0000
++++ b/GNUmakefile	2020-02-05 18:55:04.980119154 +0000
+@@ -154,7 +154,7 @@
+   ZOPT = -xO0
+ else
+   CXXFLAGS ?= -DNDEBUG -g2 -O3
+-  ZOPT = -O0
++  ZOPT = -O1
+ endif
+ 
+ # On ARM we may compile aes_armv4.S though the CC compiler
