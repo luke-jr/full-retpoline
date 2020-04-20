@@ -1,0 +1,21 @@
+diff -ur memtest86+-5.01.orig/Makefile memtest86+-5.01/Makefile
+--- memtest86+-5.01.orig/Makefile	2020-04-20 18:29:24.495654315 +0000
++++ memtest86+-5.01/Makefile	2020-04-20 19:01:02.639961325 +0000
+@@ -9,7 +9,7 @@
+ #
+ FDISK=/dev/fd0
+ 
+-CFLAGS= -Wall -march=i486 -m32 -O0 -fomit-frame-pointer -fno-builtin \
++CFLAGS= -Wall -march=i486 -m32 -O0 -fplt -mindirect-branch=keep -fomit-frame-pointer -fno-builtin \
+ 	-ffreestanding -fPIC $(SMP_FL) -fno-stack-protector 
+ CPPFLAGS= -m32
+ ASFLAGS= -32
+@@ -52,7 +52,7 @@
+ 	$(CC) -c $(CFLAGS) -fno-strict-aliasing reloc.c
+ 
+ test.o: test.c
+-test.o: CFLAGS += -O0 -fno-PIC
++test.o: CFLAGS += -O0 -mindirect-branch=keep -fplt -fno-PIC
+ 
+ random.o: random.c
+ random.o: CFLAGS += -O3 -fno-PIC
