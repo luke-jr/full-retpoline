@@ -1,0 +1,15 @@
+post_src_prepare() {
+	CFLAGS="$CFLAGS -mindirect-branch=thunk-inline -mfunction-return=thunk-inline"
+	CXXFLAGS="$CXXFLAGS -mindirect-branch=thunk-inline -mfunction-return=thunk-inline"
+
+	sed -i 's/-O0/-O1/g' \
+		compiler/ghc.mk \
+		rules/build-prog.mk \
+		mk/flavours/*.mk \
+		rts/ghc.mk \
+		libraries/Cabal/Cabal/Distribution/PackageDescription/Check.hs \
+		libraries/Cabal/Cabal/Distribution/Simple/Program/GHC.hs \
+		libraries/Cabal/Cabal/Distribution/Simple/UHC.hs \
+		utils/mkUserGuidePart/Options/OptimizationLevels.hs \
+	;
+}
