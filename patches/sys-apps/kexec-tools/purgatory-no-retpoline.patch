@@ -1,0 +1,22 @@
+diff -ur kexec-tools-2.0.19.orig/configure.ac kexec-tools-2.0.19/configure.ac
+--- kexec-tools-2.0.19.orig/configure.ac	2019-03-04 13:33:03.000000000 +0000
++++ kexec-tools-2.0.19/configure.ac	2020-04-21 12:19:41.559032387 +0000
+@@ -133,6 +133,7 @@
+ CFLAGS="$saved_CFLAGS"
+ CC="$saved_CC"
+ 
++PURGATORY_EXTRA_CFLAGS="$PURGATORY_EXTRA_CFLAGS -mindirect-branch=keep -mfunction-return=keep"
+ AC_SUBST(PURGATORY_EXTRA_CFLAGS, [$PURGATORY_EXTRA_CFLAGS])
+ 
+ dnl Find the helper functions
+diff -ur kexec-tools-2.0.19.orig/configure kexec-tools-2.0.19/configure
+--- kexec-tools-2.0.19.orig/configure	2019-03-04 13:33:26.000000000 +0000
++++ kexec-tools-2.0.19/configure	2020-04-21 12:23:10.644274320 +0000
+@@ -3896,6 +3884,7 @@
+ CFLAGS="$saved_CFLAGS"
+ CC="$saved_CC"
+ 
++PURGATORY_EXTRA_CFLAGS="$PURGATORY_EXTRA_CFLAGS -mindirect-branch=keep -mfunction-return=keep"
+ PURGATORY_EXTRA_CFLAGS=$PURGATORY_EXTRA_CFLAGS
+ 
+ 
