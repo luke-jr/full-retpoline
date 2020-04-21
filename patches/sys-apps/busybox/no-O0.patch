@@ -1,0 +1,11 @@
+diff -ur busybox-1.31.1.orig/scripts/kconfig/Makefile busybox-1.31.1/scripts/kconfig/Makefile
+--- busybox-1.31.1.orig/scripts/kconfig/Makefile	2019-06-10 10:50:53.000000000 +0000
++++ busybox-1.31.1/scripts/kconfig/Makefile	2020-04-21 00:31:41.797323977 +0000
+@@ -67,6 +67,7 @@
+ 
+ allyesconfig: $(obj)/conf
+ 	$< -y Config.in
++	sed -i '/CONFIG_DEBUG_PESSIMIZE=/d' .config
+ 	$(MTIME_IS_COARSE) && sleep 1
+ 
+ allnoconfig: $(obj)/conf
