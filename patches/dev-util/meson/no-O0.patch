@@ -1,20 +1,70 @@
-diff -ur meson-0.51.2.orig/mesonbuild/compilers/c.py meson-0.51.2/mesonbuild/compilers/c.py
---- meson-0.51.2.orig/mesonbuild/compilers/c.py	2019-08-25 19:17:02.000000000 +0000
-+++ meson-0.51.2/mesonbuild/compilers/c.py	2020-01-14 19:12:59.966210516 +0000
-@@ -357,9 +357,6 @@
-     def get_compile_only_args(self):
-         return []
+diff -ur meson-0.52.1.orig/mesonbuild/compilers/compilers.py meson-0.52.1/mesonbuild/compilers/compilers.py
+--- meson-0.52.1.orig/mesonbuild/compilers/compilers.py	2019-11-28 17:37:44.000000000 +0000
++++ meson-0.52.1/mesonbuild/compilers/compilers.py	2020-04-22 07:10:40.502616470 +0000
+@@ -219,7 +219,7 @@
+                            }
  
--    def get_no_optimization_args(self):
--        return ['-optimize=0']
--
-     def get_output_args(self, target):
-         return ['-output=obj=%s' % target]
+ cuda_optimization_args = {'0': [],
+-                          'g': ['-O0'],
++                          'g': ['-O1'],
+                           '1': ['-O1'],
+                           '2': ['-O2'],
+                           '3': ['-O3'],
+diff -ur meson-0.52.1.orig/mesonbuild/compilers/cuda.py meson-0.52.1/mesonbuild/compilers/cuda.py
+--- meson-0.52.1.orig/mesonbuild/compilers/cuda.py	2019-11-28 17:37:44.000000000 +0000
++++ meson-0.52.1/mesonbuild/compilers/cuda.py	2020-04-22 07:10:31.589569219 +0000
+@@ -225,7 +225,7 @@
+         return ['-c']
  
-diff -ur meson-0.51.2.orig/mesonbuild/compilers/clike.py meson-0.51.2/mesonbuild/compilers/clike.py
---- meson-0.51.2.orig/mesonbuild/compilers/clike.py	2019-08-25 19:17:02.000000000 +0000
-+++ meson-0.51.2/mesonbuild/compilers/clike.py	2020-01-14 19:14:24.117679565 +0000
-@@ -123,7 +123,7 @@
+     def get_no_optimization_args(self):
+-        return ['-O0']
++        return ['-O1']
+ 
+     def get_optimization_args(self, optimization_level):
+         # alternatively, consider simply redirecting this to the host compiler, which would
+diff -ur meson-0.52.1.orig/mesonbuild/compilers/mixins/arm.py meson-0.52.1/mesonbuild/compilers/mixins/arm.py
+--- meson-0.52.1.orig/mesonbuild/compilers/mixins/arm.py	2019-11-28 17:37:44.000000000 +0000
++++ meson-0.52.1/mesonbuild/compilers/mixins/arm.py	2020-04-22 07:09:56.937385556 +0000
+@@ -28,7 +28,7 @@
+ 
+ arm_buildtype_args = {
+     'plain': [],
+-    'debug': ['-O0', '--debug'],
++    'debug': ['-O1', '--debug'],
+     'debugoptimized': ['-O1', '--debug'],
+     'release': ['-O3', '-Otime'],
+     'minsize': ['-O3', '-Ospace'],
+@@ -36,7 +36,7 @@
+ }  # type: typing.Dict[str, typing.List[str]]
+ 
+ arm_optimization_args = {
+-    '0': ['-O0'],
++    '0': ['-O1'],
+     'g': ['-g'],
+     '1': ['-O1'],
+     '2': ['-O2'],
+@@ -46,7 +46,7 @@
+ 
+ armclang_buildtype_args = {
+     'plain': [],
+-    'debug': ['-O0', '-g'],
++    'debug': ['-O1', '-g'],
+     'debugoptimized': ['-O1', '-g'],
+     'release': ['-Os'],
+     'minsize': ['-Oz'],
+@@ -54,7 +54,7 @@
+ }  # type: typing.Dict[str, typing.List[str]]
+ 
+ armclang_optimization_args = {
+-    '0': ['-O0'],
++    '0': ['-O1'],
+     'g': ['-g'],
+     '1': ['-O1'],
+     '2': ['-O2'],
+diff -ur meson-0.52.1.orig/mesonbuild/compilers/mixins/clike.py meson-0.52.1/mesonbuild/compilers/mixins/clike.py
+--- meson-0.52.1.orig/mesonbuild/compilers/mixins/clike.py	2019-11-28 17:37:44.000000000 +0000
++++ meson-0.52.1/mesonbuild/compilers/mixins/clike.py	2020-04-22 07:09:29.030237685 +0000
+@@ -102,7 +102,7 @@
          return ['-c']
  
      def get_no_optimization_args(self):
@@ -23,18 +73,15 @@ diff -ur meson-0.51.2.orig/mesonbuild/compilers/clike.py meson-0.51.2/mesonbuild
  
      def get_compiler_check_args(self):
          '''
-diff -ur meson-0.51.2.orig/run_unittests.py meson-0.51.2/run_unittests.py
---- meson-0.51.2.orig/run_unittests.py	2019-08-26 16:28:03.000000000 +0000
-+++ meson-0.51.2/run_unittests.py	2020-01-14 19:12:47.390140456 +0000
-@@ -4486,9 +4486,9 @@
-             # Verify that -I flags from the `args` kwarg are first
-             # This is set in the '40 has function' test case
+diff -ur meson-0.52.1.orig/run_unittests.py meson-0.52.1/run_unittests.py
+--- meson-0.52.1.orig/run_unittests.py	2019-11-28 17:37:44.000000000 +0000
++++ meson-0.52.1/run_unittests.py	2020-04-22 07:08:38.624970700 +0000
+@@ -4827,7 +4827,7 @@
              self.assertEqual(cmd[1], '-I/tmp')
--            # Verify that -O3 set via the environment is overridden by -O0
-+            # Verify that -O3 set via the environment is overridden by -O1
+             # Verify that -O3 set via the environment is overridden by -O0
              Oargs = [arg for arg in cmd if arg.startswith('-O')]
 -            self.assertEqual(Oargs, [Oflag, '-O0'])
 +            self.assertEqual(Oargs, [Oflag, '-O1'])
  
-     def _test_stds_impl(self, testdir, compiler, p):
+     def _test_stds_impl(self, testdir, compiler, p: str):
          lang_std = p + '_std'
