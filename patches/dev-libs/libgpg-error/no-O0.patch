@@ -1,22 +1,22 @@
-diff -ur libgpg-error-1.27.orig/src/Makefile.am libgpg-error-1.27/src/Makefile.am
---- libgpg-error-1.27.orig/src/Makefile.am	2017-02-28 12:33:38.000000000 +0000
-+++ libgpg-error-1.27/src/Makefile.am	2018-03-02 17:30:14.805020382 +0000
-@@ -271,7 +271,7 @@
+diff -ur libgpg-error-1.36.orig/src/Makefile.am libgpg-error-1.36/src/Makefile.am
+--- libgpg-error-1.36.orig/src/Makefile.am	2020-04-25 04:09:48.407991046 +0000
++++ libgpg-error-1.36/src/Makefile.am	2020-04-25 17:34:36.925143983 +0000
+@@ -298,7 +298,7 @@
  
  
- mkheader: mkheader.c Makefile
+ mkheader$(EXEEXT_FOR_BUILD): mkheader.c Makefile
 -	$(CC_FOR_BUILD) -g -O0 -I. -I$(srcdir) -o $@ $(srcdir)/mkheader.c
 +	$(CC_FOR_BUILD) -g -I. -I$(srcdir) -o $@ $(srcdir)/mkheader.c
  
  parts_of_gpg_error_h = 	 	\
  	gpg-error.h.in  	\
-diff -ur libgpg-error-1.27.orig/src/Makefile.in libgpg-error-1.27/src/Makefile.in
---- libgpg-error-1.27.orig/src/Makefile.in	2017-02-28 14:03:41.000000000 +0000
-+++ libgpg-error-1.27/src/Makefile.in	2018-03-02 17:32:30.681811735 +0000
-@@ -1326,7 +1326,7 @@
+diff -ur libgpg-error-1.36.orig/src/Makefile.in libgpg-error-1.36/src/Makefile.in
+--- libgpg-error-1.36.orig/src/Makefile.in	2019-03-19 08:58:04.000000000 +0000
++++ libgpg-error-1.36/src/Makefile.in	2020-04-25 17:34:49.812226888 +0000
+@@ -1619,7 +1619,7 @@
  		$(srcdir)/errnos.in >$@
  
- mkheader: mkheader.c Makefile
+ mkheader$(EXEEXT_FOR_BUILD): mkheader.c Makefile
 -	$(CC_FOR_BUILD) -g -O0 -I. -I$(srcdir) -o $@ $(srcdir)/mkheader.c
 +	$(CC_FOR_BUILD) -g -I. -I$(srcdir) -o $@ $(srcdir)/mkheader.c
  
