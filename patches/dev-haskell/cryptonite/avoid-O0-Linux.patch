@@ -1,0 +1,22 @@
+diff -ur cryptonite-0.26.orig/cbits/argon2/core.c cryptonite-0.26/cbits/argon2/core.c
+--- cryptonite-0.26.orig/cbits/argon2/core.c	2019-01-05 22:52:23.000000000 +0000
++++ cryptonite-0.26/cbits/argon2/core.c	2020-09-28 12:40:50.686753291 +0000
+@@ -187,16 +187,11 @@
+     }
+ }
+ 
+-void NOT_OPTIMIZED secure_wipe_memory(void *v, size_t n) {
++void secure_wipe_memory(void *v, size_t n) {
+ #if defined(_MSC_VER) && VC_GE_2005(_MSC_VER)
+     SecureZeroMemory(v, n);
+-#elif defined memset_s
+-    memset_s(v, n, 0, n);
+-#elif defined(__OpenBSD__)
+-    explicit_bzero(v, n);
+ #else
+-    static void *(*const volatile memset_sec)(void *, int, size_t) = &memset;
+-    memset_sec(v, 0, n);
++    explicit_bzero(v, n);
+ #endif
+ }
+ 
