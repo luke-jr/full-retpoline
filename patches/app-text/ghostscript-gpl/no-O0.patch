@@ -1,6 +1,6 @@
-diff -ur ghostscript-9.52.orig/base/unix-gcc.mak ghostscript-9.52/base/unix-gcc.mak
---- ghostscript-9.52.orig/base/unix-gcc.mak	2020-10-02 12:31:24.682144014 +0000
-+++ ghostscript-9.52/base/unix-gcc.mak	2020-10-02 12:40:50.611905295 +0000
+diff -ur ghostscript-9.53.3.orig/base/unix-gcc.mak ghostscript-9.53.3/base/unix-gcc.mak
+--- ghostscript-9.53.3.orig/base/unix-gcc.mak	2020-10-01 08:11:07.000000000 +0000
++++ ghostscript-9.53.3/base/unix-gcc.mak	2020-12-29 16:17:02.586780251 +0000
 @@ -377,7 +377,7 @@
  # and shared object builds.
  
@@ -10,56 +10,60 @@ diff -ur ghostscript-9.52.orig/base/unix-gcc.mak ghostscript-9.52/base/unix-gcc.
  CFLAGS_PROFILE=-pg  -O2 -DNDEBUG
  CFLAGS_SO=-fPIC
  
-diff -ur ghostscript-9.52.orig/configure.ac ghostscript-9.52/configure.ac
---- ghostscript-9.52.orig/configure.ac	2020-10-02 12:31:24.322141620 +0000
-+++ ghostscript-9.52/configure.ac	2020-10-02 12:42:23.961523266 +0000
-@@ -286,26 +286,26 @@
+diff -ur ghostscript-9.53.3.orig/configure.ac ghostscript-9.53.3/configure.ac
+--- ghostscript-9.53.3.orig/configure.ac	2020-10-01 08:11:07.000000000 +0000
++++ ghostscript-9.53.3/configure.ac	2020-12-29 16:16:40.979698582 +0000
+@@ -287,21 +287,21 @@
          *-linux*|*-gnu)
-         if test $ac_cv_prog_gcc = yes; then
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          ;;
          *bsd*)
-         if test $ac_cv_prog_gcc = yes; then
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          ;;
          *-darwin*)
-         if test $ac_cv_prog_gcc = yes; then
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          SET_DT_SONAME=""
-         ;;
-         *-mingw*|*-msys*|*-cygwin*)
-         if test $ac_cv_prog_gcc = yes; then
+@@ -309,7 +309,7 @@
+         *-mingw*|*-msys*)
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          SET_DT_SONAME=""
-         ;;
-@@ -318,15 +318,15 @@
+@@ -323,16 +323,16 @@
          fi
-         if test $ac_cv_prog_gcc = yes; then
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          else
 -            CC_DBG_FLAGS_TO_TRY="-g -O0"
 +            CC_DBG_FLAGS_TO_TRY="-g -O1"
          fi
          ;;
          *-aix*)
-         if test $ac_cv_prog_gcc = yes; then
+         if test $GCC = yes; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
              SET_DT_SONAME="so"
+             CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
-         ;;
