@@ -1,19 +1,18 @@
-diff -ur gcc-9.2.0.orig/gcc/config/i386/i386.c gcc-9.2.0/gcc/config/i386/i386.c
---- gcc-9.2.0.orig/gcc/config/i386/i386.c	2019-08-01 06:29:22.000000000 +0000
-+++ gcc-9.2.0/gcc/config/i386/i386.c	2020-01-12 17:31:24.470855641 +0000
-@@ -92,6 +92,11 @@
- #include "debug.h"
+--- a/gcc/config/i386/i386-options.c
++++ b/gcc/config/i386/i386-options.c
+@@ -91,6 +91,11 @@ along with GCC; see the file COPYING3.  If not see
  #include "dwarf2out.h"
+ #include "i386-options.h"
  
 +#include <sys/types.h>
 +#include <signal.h>
 +#include <syslog.h>
 +#include <unistd.h>
 +
- /* This file should be included last.  */
- #include "target-def.h"
+ #include "x86-tune-costs.h"
  
-@@ -5793,6 +5798,37 @@
+ #ifndef SUBTARGET32_DEFAULT_CPU
+@@ -3082,6 +3087,37 @@ ix86_set_indirect_branch_type (tree fndecl)
  		 == indirect_branch_thunk_extern)
  		? "thunk-extern" : "thunk"));
  
@@ -49,5 +48,5 @@ diff -ur gcc-9.2.0.orig/gcc/config/i386/i386.c gcc-9.2.0/gcc/config/i386/i386.c
 +	}
 +
        if (cfun->machine->indirect_branch_type != indirect_branch_keep
- 	  && (flag_cf_protection & CF_RETURN))
- 	error ("%<-mindirect-branch%> and %<-fcf-protection%> are not "
+ 	  && (cfun->machine->indirect_branch_type
+ 	      != indirect_branch_thunk_extern)
