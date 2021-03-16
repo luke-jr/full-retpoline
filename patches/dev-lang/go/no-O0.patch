@@ -1,19 +1,17 @@
-diff -ur go.orig/src/cmd/cgo/gcc.go go/src/cmd/cgo/gcc.go
---- go.orig/src/cmd/cgo/gcc.go	2019-12-04 22:53:55.000000000 +0000
-+++ go/src/cmd/cgo/gcc.go	2020-01-12 17:12:03.827927212 +0000
-@@ -1980,7 +1980,7 @@
- 	}
+--- a/src/cmd/cgo/gcc.go
++++ b/src/cmd/cgo/gcc.go
+@@ -2004,7 +2004,7 @@ func (p *Package) gccErrors(stdin []byte, extraArgs ...string) string {
+ 	// trailing "-" at the end.
+ 	li := len(nargs) - 1
+ 	last := nargs[li]
+-	nargs[li] = "-O0"
++	nargs[li] = "-O1"
+ 	nargs = append(nargs, extraArgs...)
+ 	nargs = append(nargs, last)
  
- 	// Force -O0 optimization but keep the trailing "-" at the end.
--	nargs = append(nargs, "-O0")
-+	nargs = append(nargs, "-O1")
- 	nl := len(nargs)
- 	nargs[nl-2], nargs[nl-1] = nargs[nl-1], nargs[nl-2]
- 
-diff -ur go.orig/src/runtime/testdata/testprogcgo/sigpanic.go go/src/runtime/testdata/testprogcgo/sigpanic.go
---- go.orig/src/runtime/testdata/testprogcgo/sigpanic.go	2019-12-04 22:53:55.000000000 +0000
-+++ go/src/runtime/testdata/testprogcgo/sigpanic.go	2020-01-12 17:12:18.157000353 +0000
-@@ -8,7 +8,7 @@
+--- a/src/runtime/testdata/testprogcgo/sigpanic.go
++++ b/src/runtime/testdata/testprogcgo/sigpanic.go
+@@ -8,7 +8,7 @@ package main
  // We want to test unwinding from sigpanic into C code (without a C symbolizer).
  
  /*
@@ -22,15 +20,14 @@ diff -ur go.orig/src/runtime/testdata/testprogcgo/sigpanic.go go/src/runtime/tes
  
  char *pnil;
  
-diff -ur go.orig/src/runtime/testdata/testprogcgo/traceback.go go/src/runtime/testdata/testprogcgo/traceback.go
---- go.orig/src/runtime/testdata/testprogcgo/traceback.go	2019-12-04 22:53:55.000000000 +0000
-+++ go/src/runtime/testdata/testprogcgo/traceback.go	2020-01-12 17:12:14.832983386 +0000
-@@ -9,7 +9,7 @@
+--- a/src/runtime/testdata/testprogcgo/traceback.go
++++ b/src/runtime/testdata/testprogcgo/traceback.go
+@@ -9,7 +9,7 @@ package main
  // We use a fake traceback, and a symbolizer that dumps a string we recognize.
  
  /*
 -#cgo CFLAGS: -g -O0
 +#cgo CFLAGS: -g -O1
  
- #include <stdint.h>
- 
+ // Defined in traceback_c.c.
+ extern int crashInGo;
