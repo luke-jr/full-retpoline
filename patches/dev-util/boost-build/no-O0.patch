@@ -1,37 +1,30 @@
-diff -ur a/engine/build.sh b/engine/build.sh
---- a/engine/build.sh	2019-08-14 12:03:50.000000000 +0000
-+++ b/engine/build.sh	2020-01-16 04:50:29.980642534 +0000
-@@ -185,7 +185,7 @@
-         *)
-         B2_CXX="${CXX} -x c++ -std=c++11"
+diff --git a/engine/build.sh b/engine/build.sh
+index 58f41cb..f8bdc87 100755
+--- a/engine/build.sh
++++ b/engine/build.sh
+@@ -326,7 +326,7 @@ case "${B2_TOOLSET}" in
+             ;;
+         esac
          B2_CXXFLAGS_RELEASE="-O2 -s"
 -        B2_CXXFLAGS_DEBUG="-O0 -g"
 +        B2_CXXFLAGS_DEBUG="-O1 -g"
-         esac
      ;;
  
-@@ -236,7 +236,7 @@
-         fi
-         B2_CXX="${CXX} -xc++"
-         B2_CXXFLAGS_RELEASE="-O3 -s"
--        B2_CXXFLAGS_DEBUG="-O0 -g -p"
-+        B2_CXXFLAGS_DEBUG="-O1 -g -p"
-     ;;
- 
-     vacpp)
-@@ -324,7 +324,7 @@
-         B2_CXX="${CXX} -x c++ -O3 -std=c++11"
-         B2_TOOLSET=clang
+     intel-*)
+@@ -392,7 +392,7 @@ case "${B2_TOOLSET}" in
+     clang*)
+         CXX_VERSION_OPT=${CXX_VERSION_OPT:---version}
          B2_CXXFLAGS_RELEASE="-O3 -s"
 -        B2_CXXFLAGS_DEBUG="-O0 -fno-inline -g"
 +        B2_CXXFLAGS_DEBUG="-O1 -Wno-inline -g"
      ;;
  
      tru64cxx)
-diff -ur a/tools/gcc.jam b/tools/gcc.jam
---- a/tools/gcc.jam	2019-08-14 12:03:50.000000000 +0000
-+++ b/tools/gcc.jam	2020-01-16 04:50:55.767796283 +0000
-@@ -704,11 +704,11 @@
+diff --git a/tools/gcc.jam b/tools/gcc.jam
+index 6f298e7..d5f999f 100644
+--- a/tools/gcc.jam
++++ b/tools/gcc.jam
+@@ -704,11 +704,11 @@ actions compile.c.pch
  ###
  
  # Declare flags and action for compilation.
@@ -45,10 +38,11 @@ diff -ur a/tools/gcc.jam b/tools/gcc.jam
  toolset.flags gcc.compile OPTIONS <inlining>on   : -Wno-inline ;
  toolset.flags gcc.compile OPTIONS <inlining>full : -finline-functions -Wno-inline ;
  
-diff -ur a/tools/gcc.py b/tools/gcc.py
---- a/tools/gcc.py	2019-08-14 12:03:50.000000000 +0000
-+++ b/tools/gcc.py	2020-01-16 04:50:43.605723773 +0000
-@@ -278,11 +278,11 @@
+diff --git a/tools/gcc.py b/tools/gcc.py
+index 9bf98a3..a0494b5 100644
+--- a/tools/gcc.py
++++ b/tools/gcc.py
+@@ -278,11 +278,11 @@ generators.override('gcc.compile.c++.pch', 'pch.default-cpp-pch-generator')
  flags('gcc.compile', 'PCH_FILE', ['<pch>on'], ['<pch-file>'])
  
  # Declare flags and action for compilation
