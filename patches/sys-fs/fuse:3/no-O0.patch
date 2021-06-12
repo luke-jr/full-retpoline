@@ -1,6 +1,5 @@
-diff -ur fuse-3.9.1.orig/meson.build fuse-3.9.1/meson.build
---- fuse-3.9.1.orig/meson.build	2020-03-19 20:00:41.000000000 +0000
-+++ fuse-3.9.1/meson.build	2020-05-01 15:04:35.002066709 +0000
+--- a/meson.build
++++ b/meson.build
 @@ -82,7 +82,7 @@
      (void) get_4();
      return 0;
@@ -10,3 +9,12 @@ diff -ur fuse-3.9.1.orig/meson.build fuse-3.9.1/meson.build
       message('Compiler warns about unused result even when casting to void')
       add_project_arguments('-Wno-unused-result', language: 'c')
  endif
+@@ -106,7 +106,7 @@ code = '''
+ int main(void) {
+     return 0;
+ }'''
+-if cc.compiles(code, args: [ '-O0', '-c'])
++if cc.compiles(code, args: ['-c'])
+      message('Compiler supports symver attribute')
+      add_project_arguments('-DHAVE_SYMVER_ATTRIBUTE', language: 'c')
+ else
