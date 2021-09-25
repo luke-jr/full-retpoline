@@ -1,0 +1,10 @@
+--- a/Rakefile	2021-09-25 17:04:55.632152589 +0000
++++ b/Rakefile	2021-09-25 17:05:09.245372784 +0000
+@@ -355,7 +355,6 @@
+     # Even -O1 causes compilation time & memory usage to skyrocket,
+     # possibly exponentially, with the number of entries to
+     # emplace_back() into the vector.
+-    flags.gsub!(%r{(^| )-O[^ ]*}, ' -O0')
+   end
+ 
+   args = [
