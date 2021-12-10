@@ -1,63 +1,66 @@
-diff -ur gcc-9.2.0.orig/gcc/common.opt gcc-9.2.0/gcc/common.opt
---- gcc-9.2.0.orig/gcc/common.opt	2020-01-12 17:23:12.596342248 +0000
-+++ gcc-9.2.0/gcc/common.opt	2020-01-12 17:23:56.296565496 +0000
-@@ -1486,7 +1486,7 @@
+diff --git a/gcc/common.opt b/gcc/common.opt
+index a88778b4e..81dc85887 100644
+--- a/gcc/common.opt
++++ b/gcc/common.opt
+@@ -1590,7 +1590,7 @@ Common Var(flag_function_sections)
  Place each function into its own section.
  
  fgcse
--Common Report Var(flag_gcse) Optimization
-+Common Report Var(flag_gcse) Init(1) Optimization
+-Common Var(flag_gcse) Optimization
++Common Var(flag_gcse) Init(1) Optimization
  Perform global common subexpression elimination.
  
  fgcse-lm
-@@ -1648,7 +1648,7 @@
+@@ -1757,7 +1757,7 @@ Common Var(flag_no_inline,0) Init(0) Optimization
  Enable inlining of function declared \"inline\", disabling disables all inlining.
  
  finline-small-functions
--Common Report Var(flag_inline_small_functions) Optimization
-+Common Report Var(flag_inline_small_functions) Init(1) Optimization
+-Common Var(flag_inline_small_functions) Optimization
++Common Var(flag_inline_small_functions) Init(1) Optimization
  Integrate functions into their callers when code size is known not to grow.
  
  finline-functions
-@@ -2056,7 +2056,7 @@
+@@ -2176,7 +2176,7 @@ Common Var(flag_pie,1) Negative(fPIC) Init(-1)
  Generate position-independent code for executables if possible (small mode).
  
  fplt
--Common Report Var(flag_plt) Init(1) Optimization
-+Common Report Var(flag_plt) Init(0) Optimization
+-Common Var(flag_plt) Init(1) Optimization
++Common Var(flag_plt) Init(0) Optimization
  Use PLT for PIC calls (-fno-plt: load the address from GOT at call site).
  
  fplugin=
-diff -ur gcc-9.2.0.orig/gcc/config/i386/i386.opt gcc-9.2.0/gcc/config/i386/i386.opt
---- gcc-9.2.0.orig/gcc/config/i386/i386.opt	2020-01-12 17:23:12.597342254 +0000
-+++ gcc-9.2.0/gcc/config/i386/i386.opt	2020-01-12 17:26:24.385322101 +0000
-@@ -1038,11 +1038,11 @@
+diff --git a/gcc/config/i386/i386.opt b/gcc/config/i386/i386.opt
+index c781fdc82..766c2bf61 100644
+--- a/gcc/config/i386/i386.opt
++++ b/gcc/config/i386/i386.opt
+@@ -1049,11 +1049,11 @@ Target Var(flag_force_indirect_call) Init(0)
  Make all function calls indirect.
  
  mindirect-branch=
--Target Report RejectNegative Joined Enum(indirect_branch) Var(ix86_indirect_branch) Init(indirect_branch_keep)
-+Target Report RejectNegative Joined Enum(indirect_branch) Var(ix86_indirect_branch) Init(indirect_branch_thunk)
+-Target RejectNegative Joined Enum(indirect_branch) Var(ix86_indirect_branch) Init(indirect_branch_keep)
++Target RejectNegative Joined Enum(indirect_branch) Var(ix86_indirect_branch) Init(indirect_branch_thunk)
  Convert indirect call and jump to call and return thunks.
  
  mfunction-return=
--Target Report RejectNegative Joined Enum(indirect_branch) Var(ix86_function_return) Init(indirect_branch_keep)
-+Target Report RejectNegative Joined Enum(indirect_branch) Var(ix86_function_return) Init(indirect_branch_thunk)
+-Target RejectNegative Joined Enum(indirect_branch) Var(ix86_function_return) Init(indirect_branch_keep)
++Target RejectNegative Joined Enum(indirect_branch) Var(ix86_function_return) Init(indirect_branch_thunk)
  Convert function return to call and return thunk.
  
  Enum
-@@ -1062,7 +1062,7 @@
+@@ -1073,7 +1073,7 @@ EnumValue
  Enum(indirect_branch) String(thunk-extern) Value(indirect_branch_thunk_extern)
  
  mindirect-branch-register
--Target Report Var(ix86_indirect_branch_register) Init(0)
-+Target Report Var(ix86_indirect_branch_register) Init(1)
+-Target Var(ix86_indirect_branch_register) Init(0)
++Target Var(ix86_indirect_branch_register) Init(1)
  Force indirect call and jump via register.
  
  mmovdiri
-diff -ur gcc-9.2.0.orig/gcc/opts.c gcc-9.2.0/gcc/opts.c
---- gcc-9.2.0.orig/gcc/opts.c	2020-01-12 17:23:12.597342254 +0000
-+++ gcc-9.2.0/gcc/opts.c	2020-01-12 17:25:43.717114310 +0000
-@@ -313,6 +313,9 @@
+diff --git a/gcc/opts.c b/gcc/opts.c
+index 24bb64198..bf93c0407 100644
+--- a/gcc/opts.c
++++ b/gcc/opts.c
+@@ -306,6 +306,9 @@ init_options_struct (struct gcc_options *opts, struct gcc_options *opts_set)
  
    /* Some targets have other target-specific initialization.  */
    targetm_common.option_init_struct (opts);
@@ -66,8 +69,8 @@ diff -ur gcc-9.2.0.orig/gcc/opts.c gcc-9.2.0/gcc/opts.c
 +  opts->x_optimize = 1;
  }
  
- /* Release any allocations owned by OPTS.  */
-@@ -493,10 +496,8 @@
+ /* If indicated by the optimization level LEVEL (-Os if SIZE is set,
+@@ -481,10 +484,8 @@ static const struct default_options default_options_table[] =
      { OPT_LEVELS_2_PLUS, OPT_fdevirtualize, NULL, 1 },
      { OPT_LEVELS_2_PLUS, OPT_fdevirtualize_speculatively, NULL, 1 },
      { OPT_LEVELS_2_PLUS, OPT_fexpensive_optimizations, NULL, 1 },
