@@ -1,6 +1,8 @@
+diff --git a/meson.build b/meson.build
+index 8a6587b..32a303c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -82,7 +82,7 @@
+@@ -85,7 +85,7 @@ int main(void) {
      (void) get_4();
      return 0;
  }'''
@@ -9,12 +11,12 @@
       message('Compiler warns about unused result even when casting to void')
       add_project_arguments('-Wno-unused-result', language: 'c')
  endif
-@@ -106,7 +106,7 @@ code = '''
+@@ -107,7 +107,7 @@ void foo(void) {
  int main(void) {
      return 0;
  }'''
--if cc.compiles(code, args: [ '-O0', '-c'])
-+if cc.compiles(code, args: ['-c'])
+-if cc.compiles(code, args: [ '-O0', '-c', '-Werror'])
++if cc.compiles(code, args: [ '-c', '-Werror'])
       message('Compiler supports symver attribute')
       add_project_arguments('-DHAVE_SYMVER_ATTRIBUTE', language: 'c')
  else
