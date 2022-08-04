@@ -1,6 +1,6 @@
 --- a/mesonbuild/compilers/c.py
 +++ b/mesonbuild/compilers/c.py
-@@ -635,7 +635,7 @@ class Xc16CCompiler(Xc16Compiler, CCompiler):
+@@ -639,7 +639,7 @@ class Xc16CCompiler(Xc16Compiler, CCompiler):
          return []
  
      def get_no_optimization_args(self) -> T.List[str]:
@@ -8,10 +8,10 @@
 +        return ['-O1']
  
      def get_output_args(self, target: str) -> T.List[str]:
-         return ['-o%s' % target]
+         return [f'-o{target}']
 --- a/mesonbuild/compilers/mixins/clike.py
 +++ b/mesonbuild/compilers/mixins/clike.py
-@@ -182,7 +182,7 @@ class CLikeCompiler(Compiler):
+@@ -185,7 +185,7 @@ class CLikeCompiler(Compiler):
          return ['-c']
  
      def get_no_optimization_args(self) -> T.List[str]:
@@ -20,14 +20,25 @@
  
      def get_output_args(self, target: str) -> T.List[str]:
          return ['-o', target]
---- a/run_unittests.py
-+++ b/run_unittests.py
-@@ -6294,7 +6294,7 @@ class LinuxlikeTests(BasePlatformTests):
+--- a/mesonbuild/compilers/mixins/gnu.py
++++ b/mesonbuild/compilers/mixins/gnu.py
+@@ -55,7 +55,7 @@ gnulike_buildtype_args = {
+ }  # type: T.Dict[str, T.List[str]]
+ 
+ gnu_optimization_args = {
+-    '0': ['-O0'],
++    '0': ['-O1'],
+     'g': ['-Og'],
+     '1': ['-O1'],
+     '2': ['-O2'],
+--- a/unittests/linuxliketests.py
++++ b/unittests/linuxliketests.py
+@@ -489,7 +489,7 @@ class LinuxlikeTests(BasePlatformTests):
              self.assertEqual(cmd[1], '-I/tmp')
              # Verify that -O3 set via the environment is overridden by -O0
              Oargs = [arg for arg in cmd if arg.startswith('-O')]
 -            self.assertEqual(Oargs, [Oflag, '-O0'])
 +            self.assertEqual(Oargs, [Oflag, '-O1'])
  
-     def _test_stds_impl(self, testdir, compiler, p: str):
+     def _test_stds_impl(self, testdir: str, compiler: 'Compiler') -> None:
          has_cpp17 = (compiler.get_id() not in {'clang', 'gcc'} or
