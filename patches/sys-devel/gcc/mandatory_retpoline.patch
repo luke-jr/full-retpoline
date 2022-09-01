@@ -12,14 +12,13 @@
  #include "x86-tune-costs.h"
  
  #ifndef SUBTARGET32_DEFAULT_CPU
-@@ -3082,6 +3087,37 @@ ix86_set_indirect_branch_type (tree fndecl)
+@@ -3082,6 +3087,30 @@ ix86_set_indirect_branch_type (tree fndecl)
  		 == indirect_branch_thunk_extern)
  		? "thunk-extern" : "thunk"));
  
 +      /* -mindirect-branch=thunk at least requires -O1 -fearly-inlining
 +	 (always enabled) -fgcse (enabled in -O2) -fgcse-lm (always
-+	 enabled) -finline (always enabled) and
-+	 -finline-small-functions (enabled in -O2). -Og breaks it also.  */
++	 enabled). -Og breaks it also.  */
 +      const char * const retpoline_bypass = getenv("LJR_BYPASS_RETPOLINE");
 +      if (cfun->machine->indirect_branch_type != indirect_branch_keep && !(retpoline_bypass && !strcmp(retpoline_bypass, "1")))
 +	{
@@ -28,16 +27,10 @@
 +	    problem = "-O0";
 +	  if (global_options.x_optimize_debug)
 +	    problem = "-Og";
-+	  if (!flag_early_inlining)
-+	    problem = "-fno-early-inlining";
 +	  if (!flag_gcse)
 +	    problem = "-fno-gcse";
 +	  if (!flag_gcse_lm)
 +	    problem = "-fno-gcse-lm";
-+	  if (flag_no_inline)
-+	    problem = "-fno-inline";
-+	  if (!flag_inline_small_functions)
-+	    problem = "-fno-inline-small-functions";
 +	  if (problem)
 +	   {
 +	     warning (0, "%<-mindirect-branch=!keep%> and %<%s%> are not compatible", problem);
