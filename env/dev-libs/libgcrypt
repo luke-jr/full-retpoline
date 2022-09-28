@@ -1,0 +1,1 @@
+EXTRA_ECONF="--disable-jent-support --disable-O-flag-munging"
