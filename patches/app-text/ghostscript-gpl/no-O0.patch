@@ -1,7 +1,8 @@
-diff -ur ghostscript-9.53.3.orig/base/unix-gcc.mak ghostscript-9.53.3/base/unix-gcc.mak
---- ghostscript-9.53.3.orig/base/unix-gcc.mak	2020-10-01 08:11:07.000000000 +0000
-+++ ghostscript-9.53.3/base/unix-gcc.mak	2020-12-29 16:17:02.586780251 +0000
-@@ -377,7 +377,7 @@
+diff --git a/base/unix-gcc.mak b/base/unix-gcc.mak
+index 121e9c6..ad6f983 100644
+--- a/base/unix-gcc.mak
++++ b/base/unix-gcc.mak
+@@ -366,7 +366,7 @@ GCFLAGS=  -Wall -Wstrict-prototypes -Wundef -Wmissing-declarations -Wmissing-pro
  # and shared object builds.
  
  CFLAGS_STANDARD= -O2 -DNDEBUG
@@ -10,12 +11,13 @@ diff -ur ghostscript-9.53.3.orig/base/unix-gcc.mak ghostscript-9.53.3/base/unix-
  CFLAGS_PROFILE=-pg  -O2 -DNDEBUG
  CFLAGS_SO=-fPIC
  
-diff -ur ghostscript-9.53.3.orig/configure.ac ghostscript-9.53.3/configure.ac
---- ghostscript-9.53.3.orig/configure.ac	2020-10-01 08:11:07.000000000 +0000
-+++ ghostscript-9.53.3/configure.ac	2020-12-29 16:16:40.979698582 +0000
-@@ -287,21 +287,21 @@
+diff --git a/configure.ac b/configure.ac
+index e4feaea..741a8b5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -272,21 +272,21 @@ case $host in
          *-linux*|*-gnu)
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
@@ -23,7 +25,7 @@ diff -ur ghostscript-9.53.3.orig/configure.ac ghostscript-9.53.3/configure.ac
          fi
          ;;
          *bsd*)
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
@@ -31,25 +33,25 @@ diff -ur ghostscript-9.53.3.orig/configure.ac ghostscript-9.53.3/configure.ac
          fi
          ;;
          *-darwin*)
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
              CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          SET_DT_SONAME=""
-@@ -309,7 +309,7 @@
+@@ -294,7 +294,7 @@ case $host in
          *-mingw*|*-msys*)
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
              CC_VISIBILITY_FLAGS_TO_TRY="-fvisibility=hidden"
          fi
          SET_DT_SONAME=""
-@@ -323,16 +323,16 @@
+@@ -308,16 +308,16 @@ case $host in
          fi
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
@@ -60,7 +62,7 @@ diff -ur ghostscript-9.53.3.orig/configure.ac ghostscript-9.53.3/configure.ac
          fi
          ;;
          *-aix*)
-         if test $GCC = yes; then
+         if test x"$GCC" = x"yes"; then
              CC_OPT_FLAGS_TO_TRY="-O2 -DNDEBUG"
 -            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O0"
 +            CC_DBG_FLAGS_TO_TRY="-gdwarf-2 -g3 -O1"
