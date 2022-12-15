@@ -1,0 +1,26 @@
+diff --git a/configure.ac b/configure.ac
+index ba74dea..e2d960f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2036,20 +2036,13 @@ _SAVE_VAR([CFLAGS])
+ CFLAGS="-Og"
+ AC_CACHE_CHECK([if $CC supports -Og optimization level],
+                [ac_cv_cc_supports_og],
+-  AC_COMPILE_IFELSE(
+-    [
+-      AC_LANG_PROGRAM([[]], [[]])
+-    ],[
+-      ac_cv_cc_supports_og=yes
+-    ],[
+       ac_cv_cc_supports_og=no
+-    ])
+ )
+ _RESTORE_VAR([CFLAGS])
+ 
+ # Optimization messes up debuggers, so turn it off for
+ # debug builds.
+-PYDEBUG_CFLAGS="-O0"
++PYDEBUG_CFLAGS="-O1"
+ AS_VAR_IF([ac_cv_cc_supports_og], [yes],
+           [PYDEBUG_CFLAGS="-Og"])
+ 
